@@ -21,9 +21,9 @@ class Day01 {
 
 
 fun main() {
-    val input = FileInput().get("inputs/day01.txt")
-    val day01 = Day01()
-    println("Problem one: ${day01.problemOne(input)}")
-    println("Problem two: ${day01.problemTwo(input)}")
+    val input = FileInput().get("src/main/kotlin/twentytwentyone/inputs/day01.txt")
+    val solver = Day01()
+    println("Problem one: ${solver.problemOne(input)}")
+    println("Problem two: ${solver.problemTwo(input)}")
 }
 

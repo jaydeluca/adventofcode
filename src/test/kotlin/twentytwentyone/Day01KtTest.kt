@@ -3,10 +3,10 @@ package twentytwentyone
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-internal class Day01KtTest {
+class Day01KtTest {
 
     @Test
-    fun testDay01PartOneWithExampleInput() {
+    fun testPartOneWithExampleInput() {
         val testInput = listOf(
             "199",
             "200",
@@ -26,7 +26,7 @@ internal class Day01KtTest {
     }
 
     @Test
-    fun testDay01PartOneCustomInputTest() {
+    fun testPartOneCustomInputTest() {
         val testInput = listOf(
             "100",
             "101",
@@ -46,7 +46,7 @@ internal class Day01KtTest {
     }
 
     @Test
-    fun testDay01PartTwoExampleInput() {
+    fun testPartTwoExampleInput() {
         val testInput = listOf(
             "199",
             "200",
