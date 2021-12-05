@@ -5,23 +5,23 @@ import org.junit.jupiter.api.Test
 
 class Day01KtTest {
 
+    private val exampleInput = listOf(
+        "199",
+        "200",
+        "208",
+        "210",
+        "200",
+        "207",
+        "240",
+        "269",
+        "260",
+        "263",
+    )
+
     @Test
     fun testPartOneWithExampleInput() {
-        val testInput = listOf(
-            "199",
-            "200",
-            "208",
-            "210",
-            "200",
-            "207",
-            "240",
-            "269",
-            "260",
-            "263",
-        )
-
         val solver = Day01()
-        val result = solver.problemOne(testInput)
+        val result = solver.problemOne(exampleInput)
         assertEquals(7, result)
     }
 
@@ -47,21 +47,8 @@ class Day01KtTest {
 
     @Test
     fun testPartTwoExampleInput() {
-        val testInput = listOf(
-            "199",
-            "200",
-            "208",
-            "210",
-            "200",
-            "207",
-            "240",
-            "269",
-            "260",
-            "263",
-        )
-
         val solver = Day01()
-        val result = solver.problemTwo(testInput)
+        val result = solver.problemTwo(exampleInput)
         assertEquals(5, result)
     }
 }
