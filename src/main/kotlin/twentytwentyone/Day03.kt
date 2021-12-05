@@ -95,7 +95,6 @@ class Day03 {
         val gamma = Integer.parseInt(gammaBinary, 2)
         val epsilon = Integer.parseInt(epsilonBinary, 2)
         return gamma * epsilon
-
     }
 
     fun problemTwo(input: List<String>): Int {
