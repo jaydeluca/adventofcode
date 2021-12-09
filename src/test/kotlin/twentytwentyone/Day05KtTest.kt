@@ -29,6 +29,6 @@ class Day05KtTest {
     fun testPartTwoWithExampleInput() {
         val solver = Day05()
         val result = solver.problemTwo(exampleInput)
-        assertEquals(1924, result)
+        assertEquals(17, result)
     }
 }
