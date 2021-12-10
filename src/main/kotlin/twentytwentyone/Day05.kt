@@ -1,25 +1,32 @@
 package twentytwentyone
 
 import common.FileInput
-
+import kotlin.math.absoluteValue
 
 class Day05 {
 
-    private fun parseInputs(input: List<String>): List<List<Pair<Int, Int>>> =
+    private fun parseInputs(input: List<String>): List<Line> =
         input.map {
-            it.split(" -> ")
-                .map { p ->
-                    val cut = p.split(",")
-                    Pair(cut[0].toInt(), cut[1].toInt())
+            it
+                .split(" -> ")
+                .map { p -> p.split(",").map(String::toInt) }
+                .map { (x, y) ->
+                    Pair(x, y)
                 }
+        }.map { (p1, p2) -> Line(start = p1, end = p2) }
+
+    data class Line(val start: Pair<Int, Int>, val end: Pair<Int, Int>) {
+        private fun generateRange(x1: Int, x2: Int): IntProgression {
+            return if (x1 <= x2) x1..x2 else x1 downTo x2
         }
 
-    private fun generateRange(x1: Int, x2: Int): List<Int> {
-        val result = mutableListOf<Int>()
-        for (i in minOf(x1, x2)..maxOf(x1, x2)) {
-            result.add((i))
-        }
-        return result
+        fun isVertical() = start.first == end.first
+        fun isHorizontal() = start.second == end.second
+        fun isDiagonal() =
+            (start.first - end.first).absoluteValue == (start.second - end.second).absoluteValue
+
+        fun xRange() = generateRange(this.start.first, this.end.first)
+        fun yRange() = generateRange(this.start.second, this.end.second)
     }
 
     fun problemOne(input: List<String>): Int {
@@ -28,13 +35,11 @@ class Day05 {
         val parsedInput = parseInputs(input)
 
         parsedInput
-            .filter { it[0].first == it[1].first || it[0].second == it[1].second }
+            .filter { it.isVertical() || it.isHorizontal() }
             .forEach {
-                val xRange = generateRange(it[0].first, it[1].first)
-                val yRange = generateRange(it[0].second, it[1].second)
-                for (x in xRange) {
+                for (x in it.xRange()) {
                     if (!matrix.containsKey(x)) matrix[x] = hashMapOf()
-                    for (y in yRange) {
+                    for (y in it.yRange()) {
                         var value = matrix[x]!!.getOrDefault(y, 0) + 1
                         matrix[x]!![y] = value
                         if (value > 1) dangerZones.add(Pair(x, y))
@@ -50,27 +55,25 @@ class Day05 {
         val dangerZones = mutableSetOf<Pair<Int, Int>>()
         val parsedInput = parseInputs(input)
 
-        parsedInput.forEach {
-            val xRange = generateRange(it[0].first, it[1].first)
-            val yRange = generateRange(it[0].second, it[1].second)
-            for (x in xRange) {
-                if (!matrix.containsKey(x)) matrix[x] = hashMapOf()
-                for (y in yRange) {
-                    var value = matrix[x]!!.getOrDefault(y, 0) + 1
-                    matrix[x]!![y] = value
-                    if (value > 1) dangerZones.add(Pair(x, y))
+        parsedInput
+            .filter { it.isHorizontal() || it.isVertical() || it.isDiagonal() }
+            .forEach {
+                for (x in it.xRange()) {
+                    if (!matrix.containsKey(x)) matrix[x] = hashMapOf()
+                    for (y in it.yRange()) {
+                        var value = matrix[x]!!.getOrDefault(y, 0) + 1
+                        matrix[x]!![y] = value
+                        if (value > 1) dangerZones.add(Pair(x, y))
+                    }
                 }
-
             }
-        }
 
-        for (x in matrix) {
-            for (i in x.value) {
-                print(i.value)
-            }
-            println()
-        }
-
+//        for (x in matrix) {
+//            for (i in x.value) {
+//                print(i.value)
+//            }
+//            println()
+//        }
 
         return dangerZones.size
     }
