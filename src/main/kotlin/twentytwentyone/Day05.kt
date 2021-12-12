@@ -1,7 +1,6 @@
 package twentytwentyone
 
 import common.FileInput
-import kotlin.math.absoluteValue
 
 class Day05 {
 
@@ -11,39 +10,51 @@ class Day05 {
                 .split(" -> ")
                 .map { p -> p.split(",").map(String::toInt) }
                 .map { (x, y) ->
-                    Pair(x, y)
+                    Point(x, y)
                 }
         }.map { (p1, p2) -> Line(start = p1, end = p2) }
 
-    data class Line(val start: Pair<Int, Int>, val end: Pair<Int, Int>) {
+    data class Point(
+        val x: Int,
+        val y: Int
+    )
+
+    data class Line(val start: Point, val end: Point) {
         private fun generateRange(x1: Int, x2: Int): IntProgression {
             return if (x1 <= x2) x1..x2 else x1 downTo x2
         }
 
-        fun isVertical() = start.first == end.first
-        fun isHorizontal() = start.second == end.second
-        fun isDiagonal() =
-            (start.first - end.first).absoluteValue == (start.second - end.second).absoluteValue
+        fun isVertical() = start.x == end.x
+        fun isHorizontal() = start.y == end.y
 
-        fun xRange() = generateRange(this.start.first, this.end.first)
-        fun yRange() = generateRange(this.start.second, this.end.second)
+        private fun xRange() = generateRange(this.start.x, this.end.x)
+        private fun yRange() = generateRange(this.start.y, this.end.y)
+
+        fun generatePoints(): Set<Point> {
+            return if (isVertical() || isHorizontal()) {
+                xRange().map { x ->
+                    yRange().map { y ->
+                        Point(x, y)
+                    }
+                }.flatten().toSet()
+            } else {
+                xRange().zip(yRange()).map { Point(it.first, it.second) }.toSet()
+            }
+        }
     }
 
     fun problemOne(input: List<String>): Int {
         val matrix = HashMap<Int, HashMap<Int, Int>>()
-        val dangerZones = mutableSetOf<Pair<Int, Int>>()
-        val parsedInput = parseInputs(input)
+        val dangerZones = mutableSetOf<Point>()
 
-        parsedInput
+        parseInputs(input)
             .filter { it.isVertical() || it.isHorizontal() }
             .forEach {
-                for (x in it.xRange()) {
-                    if (!matrix.containsKey(x)) matrix[x] = hashMapOf()
-                    for (y in it.yRange()) {
-                        var value = matrix[x]!!.getOrDefault(y, 0) + 1
-                        matrix[x]!![y] = value
-                        if (value > 1) dangerZones.add(Pair(x, y))
-                    }
+                it.generatePoints().forEach { point ->
+                    if (!matrix.containsKey(point.x)) matrix[point.x] = hashMapOf()
+                    var value = matrix[point.x]!!.getOrDefault(point.y, 0) + 1
+                    matrix[point.x]!![point.y] = value
+                    if (value > 1) dangerZones.add(point)
                 }
             }
 
@@ -52,29 +63,16 @@ class Day05 {
 
     fun problemTwo(input: List<String>): Int {
         val matrix = HashMap<Int, HashMap<Int, Int>>()
-        val dangerZones = mutableSetOf<Pair<Int, Int>>()
-        val parsedInput = parseInputs(input)
-
-        parsedInput
-            .filter { it.isHorizontal() || it.isVertical() || it.isDiagonal() }
+        val dangerZones = mutableSetOf<Point>()
+        parseInputs(input)
             .forEach {
-                for (x in it.xRange()) {
-                    if (!matrix.containsKey(x)) matrix[x] = hashMapOf()
-                    for (y in it.yRange()) {
-                        var value = matrix[x]!!.getOrDefault(y, 0) + 1
-                        matrix[x]!![y] = value
-                        if (value > 1) dangerZones.add(Pair(x, y))
-                    }
+                it.generatePoints().forEach { point ->
+                    if (!matrix.containsKey(point.x)) matrix[point.x] = hashMapOf()
+                    var value = matrix[point.x]!!.getOrDefault(point.y, 0) + 1
+                    matrix[point.x]!![point.y] = value
+                    if (value > 1) dangerZones.add(point)
                 }
             }
-
-//        for (x in matrix) {
-//            for (i in x.value) {
-//                print(i.value)
-//            }
-//            println()
-//        }
-
         return dangerZones.size
     }
 }
@@ -84,7 +82,6 @@ fun main() {
     val input = FileInput().get("src/main/kotlin/twentytwentyone/inputs/day05.txt")
     val solver = Day05()
     println("Problem one: ${solver.problemOne(input)}")
-    // incomplete
-//    println("Problem two: ${solver.problemTwo(input)}")
+    println("Problem two: ${solver.problemTwo(input)}")
 }
 
