@@ -3,7 +3,7 @@ package twentytwentytwo
 import common.FileInput
 
 
-class Day01 {
+class Day1 {
     fun problemOne(input: List<String>) : Int {
         return 1
     }
@@ -15,8 +15,8 @@ class Day01 {
 
 
 fun main() {
-    val input = FileInput().get("src/main/kotlin/twentytwentytwo/inputs/day01.txt")
-    val solver = Day01()
+    val input = FileInput().get("src/main/kotlin/twentytwentytwo/inputs/day1.txt")
+    val solver = Day1()
     println("Problem one: ${solver.problemOne(input)}")
     println("Problem two: ${solver.problemTwo(input)}")
 }

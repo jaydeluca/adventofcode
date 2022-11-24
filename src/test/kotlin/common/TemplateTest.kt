@@ -1,4 +1,4 @@
-package twentytwentytwo
+package common
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
