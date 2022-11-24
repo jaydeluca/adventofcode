@@ -15,7 +15,7 @@ class Template {
 
 
 fun main() {
-    val input = FileInput().get("src/main/kotlin/twentytwentytwo/inputs/template.txt")
+    val input = FileInput().get("src/main/kotlin/yearstring/inputs/template.txt")
     val solver = Template()
     println("Problem one: ${solver.problemOne(input)}")
     println("Problem two: ${solver.problemTwo(input)}")
