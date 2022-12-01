@@ -5,11 +5,11 @@ import common.FileInput
 
 class Day1 {
 
-    private fun calculateHighestCalories(input: List<String>): List<Int> {
+    private fun calculateCalories(input: List<String>): List<Int> {
         val list = mutableListOf<Int>()
         var currentTotal = 0
         input.forEachIndexed { index, it ->
-            if ((it == "")) {
+            if (it == "") {
                 list.add(currentTotal)
                 currentTotal = 0
             } else if (index == input.size - 1) {
@@ -23,11 +23,11 @@ class Day1 {
 
 
     fun problemOne(input: List<String>) : Int? {
-        return calculateHighestCalories(input).maxOrNull()
+        return calculateCalories(input).maxOrNull()
     }
 
     fun problemTwo(input: List<String>) : Int {
-        return calculateHighestCalories(input)
+        return calculateCalories(input)
             .sortedDescending()
             .take(3)
             .sum()
