@@ -6,31 +6,33 @@ import org.junit.jupiter.api.Test
 class Day1Test {
 
     private val exampleInput = listOf(
-        "test"
+        "1000",
+        "2000",
+        "3000",
+        "",
+        "4000",
+        "",
+        "5000",
+        "6000",
+        "",
+        "7000",
+        "8000",
+        "9000",
+        "",
+        "10000",
     )
 
     @Test
     fun testPartOneWithExampleInput() {
         val solver = Day1()
         val result = solver.problemOne(exampleInput)
-        assertEquals(7, result)
-    }
-
-    @Test
-    fun testPartOneCustomInputTest() {
-        val testInput = listOf(
-            "100",
-        )
-
-        val solver = Day1()
-        val result = solver.problemOne(testInput)
-        assertEquals(8, result)
+        assertEquals(24000, result)
     }
 
     @Test
     fun testPartTwoExampleInput() {
         val solver = Day1()
         val result = solver.problemTwo(exampleInput)
-        assertEquals(5, result)
+        assertEquals(45000, result)
     }
 }

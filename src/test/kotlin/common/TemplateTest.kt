@@ -17,17 +17,6 @@ class TemplateTest {
     }
 
     @Test
-    fun testPartOneCustomInputTest() {
-        val testInput = listOf(
-            "100",
-        )
-
-        val solver = Template()
-        val result = solver.problemOne(testInput)
-        assertEquals(8, result)
-    }
-
-    @Test
     fun testPartTwoExampleInput() {
         val solver = Template()
         val result = solver.problemTwo(exampleInput)
