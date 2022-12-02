@@ -29,8 +29,10 @@ lower_search=$(echo "$search" | tr '[:upper:]' '[:lower:]')
 
 # Generate Class from template
 template_location="src/main/kotlin/common/Template.kt"
+input_file_location="src/main/kotlin/$year_string/inputs/$lower_replace.txt"
 destination_location="src/main/kotlin/$year_string/$replace.kt"
 
+touch $input_file_location
 sed "s/$search/$replace/g" $template_location > $destination_location
 sed -i '' "s/package common/package $year_string/" $destination_location
 sed -i '' "s/yearstring/$year_string/" $destination_location
