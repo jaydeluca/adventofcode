@@ -21,7 +21,6 @@ class Day1 {
         return list
     }
 
-
     fun problemOne(input: List<String>) : Int? {
         return calculateCalories(input).maxOrNull()
     }
@@ -31,10 +30,8 @@ class Day1 {
             .sortedDescending()
             .take(3)
             .sum()
-
     }
 }
-
 
 fun main() {
     val input = FileInput().get("src/main/kotlin/twentytwentytwo/inputs/day1.txt")
