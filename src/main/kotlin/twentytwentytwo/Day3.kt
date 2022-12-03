@@ -6,14 +6,10 @@ import common.FileInput
 class Day3 {
     data class Rucksack(val compartments: List<Set<Char>>) {
         fun findCommonPriority(): Int {
-            val compare = compartments.reduce { acc: Set<Char>, set: Set<Char> ->
-                acc.intersect(set)
-            }
-            return if (compare.first().isUpperCase()) {
-                compare.first().code - 38
-            } else {
-                compare.first().code - 96
-            }
+            return compartments
+                .reduce { acc, set -> acc.intersect(set) }
+                .map { if (it.isUpperCase()) it.code - 38 else it.code - 96 }
+                .first()
         }
     }
 
