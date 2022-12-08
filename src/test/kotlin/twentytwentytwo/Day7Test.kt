@@ -42,6 +42,6 @@ class Day7Test {
     fun testPartTwoExampleInput() {
         val solver = Day7()
         val result = solver.problemTwo(exampleInput)
-        assertEquals(5, result)
+        assertEquals(24933642, result)
     }
 }

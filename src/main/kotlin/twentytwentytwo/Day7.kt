@@ -4,6 +4,8 @@ import common.FileInput
 
 
 class Day7 {
+    private var directories: List<Directory> = listOf()
+    private var root: Directory = Directory(name = "/")
 
     data class File(val name: String, val size: Int)
 
@@ -26,17 +28,16 @@ class Day7 {
         }
     }
 
-
-    fun problemOne(input: List<String>): Int {
-        val rootDirectory = Directory(name = "/")
-        var currentDirectory = rootDirectory
+    private fun parseInput(input: List<String>) {
+        this.root = Directory(name = "/")
+        var currentDirectory = this.root
 
         input.forEach {
             val split = it.split(" ")
             if (split[0] == "$") {
                 if (split.size > 2) {
                     if (split[2] == "/") {
-                        currentDirectory = rootDirectory
+                        currentDirectory = this.root
                     }
 
                     if (split[1] == "cd" && split[2] == "..") {
@@ -66,27 +67,33 @@ class Day7 {
             }
         }
 
-        val dirs = traverseDirectories(rootDirectory, mutableMapOf())
-        return dirs.values.sumOf { it.totalSize() }
+        this.directories = traverseDirectories(this.root)
     }
 
-    private fun traverseDirectories(directory: Directory, directories: MutableMap<String, Directory>): MutableMap<String, Directory> {
-        if (directory.totalSize() <= 100000) {
-            directories[directory.name] = directory
-        }
+    private fun traverseDirectories(directory: Directory): MutableList<Directory> {
+        val newDirs: MutableList<Directory> = mutableListOf(directory)
         if (directory.directories.isEmpty()) {
-            return directories
+            return newDirs
         }
 
         directory.directories.values.forEach {
-            directories += traverseDirectories(it, directories)
+            newDirs.addAll(traverseDirectories(it))
         }
 
-        return directories
+        return newDirs
     }
 
-    fun problemTwo(input: List<String>): Int {
-        return 1
+    fun problemOne(input: List<String>): Int {
+        parseInput(input)
+        return this.directories.filter { it.totalSize() <= 100000 }.sumOf { it.totalSize() }
+    }
+
+
+    fun problemTwo(input: List<String>): Int? {
+        parseInput(input)
+        val availableSpace = 70000000 - this.root.totalSize()
+        val neededSpace = 30000000 - availableSpace
+        return this.directories.map { it.totalSize() }.filter { it >= neededSpace }.minOrNull()
     }
 }
 
@@ -94,8 +101,6 @@ class Day7 {
 fun main() {
     val input = FileInput().get("src/main/kotlin/twentytwentytwo/inputs/day7.txt")
     val solver = Day7()
-    // not 645408
-    // not 1821350
     println("Problem one: ${solver.problemOne(input)}")
     println("Problem two: ${solver.problemTwo(input)}")
 }
