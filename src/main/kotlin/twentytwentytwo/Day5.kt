@@ -5,6 +5,7 @@ import common.FileInput
 
 class Day5 {
     data class Move(val quantity: Int, val startIndex: Int, val destinationIndex: Int)
+
     private val stacks = mutableMapOf<Int, ArrayDeque<String>>()
     private var moves = listOf<Move>()
 
@@ -19,10 +20,10 @@ class Day5 {
             }
         }
 
-        val containers = input.take(splitIndex).map { it ->
+        val containers = input.take(splitIndex).map {
             it
                 .chunked(4)
-                .map { container -> container.replace(" ", "") }
+                .map(String::trim)
         }
 
         for (i in 1..containerCount) {
@@ -39,15 +40,15 @@ class Day5 {
             }
         }
         this.moves = input.takeLast(input.size - splitIndex - 1)
-            .filter{ it.isNotEmpty() }.map {
-            val split = it.split("from ")
-            val split2 =  split[1].split(" to ")
-            Move(
-                quantity = split[0].replace("move ", "").trim().toInt(),
-                startIndex = split2[0].toInt(),
-                destinationIndex = split2[1].toInt(),
-            )
-        }
+            .filter { it.isNotEmpty() }.map {
+                val split = it.split("from ")
+                val split2 = split[1].split(" to ")
+                Move(
+                    quantity = split[0].replace("move ", "").trim().toInt(),
+                    startIndex = split2[0].toInt(),
+                    destinationIndex = split2[1].toInt(),
+                )
+            }
     }
 
 
@@ -70,7 +71,7 @@ class Day5 {
                 boxesToMove.add(this.stacks[it.startIndex]!!.removeFirst())
             }
             boxesToMove.reverse()
-            boxesToMove.forEach{ box ->
+            boxesToMove.forEach { box ->
                 this.stacks[it.destinationIndex]!!.addFirst(box)
             }
         }
@@ -82,6 +83,6 @@ class Day5 {
 fun main() {
     val input = FileInput().get("src/main/kotlin/twentytwentytwo/inputs/day5.txt")
     val solver = Day5()
-        println("Problem one: ${solver.problemOne(input)}")
-        println("Problem two: ${solver.problemTwo(input)}")
+    println("Problem one: ${solver.problemOne(input)}")
+    println("Problem two: ${solver.problemTwo(input)}")
 }
