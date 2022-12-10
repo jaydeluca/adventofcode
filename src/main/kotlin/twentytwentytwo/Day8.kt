@@ -11,75 +11,101 @@ class Day8 {
         input.map { row ->
             row.map { column ->
                 Integer.parseInt(column.toString())
-            }.toList()
-        }.toList().also { this.grid = it as MutableList<MutableList<Int>> }
+            }.toMutableList()
+        }.toMutableList().also { this.grid = it }
     }
-
 
     fun problemOne(input: List<String>): Int {
         parseInput(input)
-        var initialCount = 0
+        var treeCount = (grid.size + grid[0].size) * 2 - 4
 
-        // check from left to right
-        this.grid.forEach {
-            var highest = it[0]
+        // traverse, skip 0 and last
+        (1 until grid.size - 1).map { r ->
+            (1 until grid[r].size - 1).forEach { c ->
+                val value = grid[r][c]
 
-            (1 until it.size).forEach { cur ->
-                if (it[cur] > highest) {
-                    initialCount++
-                    highest = it[cur]
-                }
+                val visibleFromTop = (0 until r).map { cur -> grid[cur][c] }.none { it >= value }
+
+                val visibleFromBottom =
+                    (grid.size - 1 downTo r + 1).map { cur -> grid[cur][c] }.none { it >= value }
+
+                val visibleFromLeft = (0 until c).map { grid[r][it] }.none { it >= value }
+
+                val visibleFromRight =
+                    (grid[r].size - 1 downTo c + 1).map { cur -> grid[r][cur] }.none { it >= value }
+
+                val isVisible = visibleFromTop || visibleFromBottom || visibleFromLeft || visibleFromRight
+                if (isVisible) treeCount++
             }
         }
-
-        // right to left
-        this.grid.reversed().forEach {
-            var highest = it[0]
-            (1 until it.size).forEach { cur ->
-                if (it[cur] > highest) {
-                    initialCount++
-                    highest = it[cur]
-                }
-            }
-
-            it.forEach { item ->
-                if (item > highest) {
-                    initialCount++
-                    highest = item
-                }
-            }
-        }
-
-        // top to bottom
-        (0 until grid.size).forEach {
-            var highest = grid[it][0]
-            this.grid.forEach { value ->
-                if (value[it] > highest) {
-                    initialCount++
-                    highest = value[it]
-                }
-            }
-        }
-
-        // bottom to top
-        (0 until grid.size).forEach {
-            var highest = grid[it].last()
-            this.grid.reversed().forEach { value ->
-                if (value[it] > highest) {
-                    initialCount++
-                    highest = value[it]
-                }
-            }
-        }
-
-        return initialCount
-
+        return treeCount
     }
 
     fun problemTwo(input: List<String>): Int {
-        return 1
-    }
+        parseInput(input)
+        var highest = 0
 
+        // traverse, skip 0 and last
+        (1 until grid.size - 1).map { r ->
+            (1 until grid[r].size - 1).forEach { c ->
+                val value = grid[r][c]
+
+                var topTrees = 0
+                var bottomTrees = 0
+                var leftTrees = 0
+                var rightTrees = 0
+
+                // top
+                run breaking@ {
+                    (r - 1 downTo 0).forEach { cur ->
+                        topTrees++
+                        if (grid[cur][c] >= value) {
+                            return@breaking
+                        }
+                    }
+                }
+
+                // check bottom
+                run breaking@ {
+                    (r+1 until grid.size).forEach { cur ->
+                        bottomTrees++
+                        if (grid[cur][c] >= value) {
+                            return@breaking
+                        }
+                    }
+                }
+
+                // left
+                run breaking@ {
+                    (c - 1 downTo 0).forEach { cur ->
+                        leftTrees++
+                        if (grid[r][cur] >= value) {
+                            return@breaking
+                        }
+                    }
+                }
+
+                // right
+                run breaking@ {
+                    (c+1 until grid[0].size).forEach { cur ->
+                        rightTrees++
+                        if (grid[r][cur] >= value) {
+                            return@breaking
+                        }
+                    }
+                }
+                val height = listOf(
+                    topTrees,
+                    bottomTrees,
+                    leftTrees,
+                    rightTrees
+                ).filter { it > 0 }.reduce{acc, item -> acc * item}
+
+                if (height > highest) highest = height
+            }
+        }
+        return highest
+    }
 }
 
 

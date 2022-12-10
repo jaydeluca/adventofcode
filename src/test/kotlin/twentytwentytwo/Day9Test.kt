@@ -3,27 +3,30 @@ package twentytwentytwo
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class Day8Test {
+class Day9Test {
 
     private val exampleInput = listOf(
-        "30373",
-        "25512",
-        "65332",
-        "33549",
-        "35390",
+        "R 4",
+        "U 4",
+        "L 3",
+        "D 1",
+        "R 4",
+        "D 1",
+        "L 5",
+        "R 2",
     )
 
     @Test
     fun testPartOneWithExampleInput() {
-        val solver = Day8()
+        val solver = Day9()
         val result = solver.problemOne(exampleInput)
-        assertEquals(21, result)
+        assertEquals(13, result)
     }
 
     @Test
     fun testPartTwoExampleInput() {
-        val solver = Day8()
+        val solver = Day9()
         val result = solver.problemTwo(exampleInput)
-        assertEquals(8, result)
+        assertEquals(5, result)
     }
 }
