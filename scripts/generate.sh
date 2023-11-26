@@ -10,6 +10,7 @@ val_of_key() {
     case $1 in
         '2021') echo 'twentytwentyone';;
         '2022') echo 'twentytwentytwo';;
+        '2023') echo 'twentytwentythree';;
     esac
 }
 

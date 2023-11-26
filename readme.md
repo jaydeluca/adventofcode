@@ -1,11 +1,11 @@
 # Advent of code
 
-Solutions for [advent of code](https://adventofcode.com/2021/)
+Solutions for [advent of code](https://adventofcode.com/)
 
 Scaffold new Class, Tests, and empty input file:
 
 ```
-./scripts/generate.sh 2022 2
+./scripts/generate.sh 2023 2
 ```
 
 Generates 
