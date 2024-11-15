@@ -11,6 +11,7 @@ val_of_key() {
         '2021') echo 'twentytwentyone';;
         '2022') echo 'twentytwentytwo';;
         '2023') echo 'twentytwentythree';;
+        '2024') echo 'twentytwentyfour';;
     esac
 }
 
